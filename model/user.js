@@ -33,17 +33,15 @@ const userSchema = new mongoose.Schema({
 
 });
 //this is a pre save middleware that run
-userSchema.pre('save', async function (password) {
-  return brcypt.hash(this.password)
-  if (!this.isModified('password'))
-    return next();
-  this.password = await brcypt.hash(this.password);
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  this.password = await brcypt.hash(this.password, 10);
   next();
 });
 
 userSchema.methods.comparePassword = async function (password) {
   return brcypt.compare(password, this.password);
+};
 
-}
 const User = mongoose.model('User', userSchema);
 module.exports = User;
