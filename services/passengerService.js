@@ -1,8 +1,13 @@
 const Booking = require('../model/user');
 const bookingRepository = require('../repositary/passengerRepositary');
-
+const passengerRepositary=require('../repositary/passengerRepositary');
 const getPassengerBookings = async (passengerId) => {
-  return Booking.find({ passenger: passengerId });
+ try {
+   await passengerRepositary.findPassengerById(passengerId);
+ } catch (error) {
+   console.log(error);
+   
+ }
 };
 
 const provideFeedback = async (passengerId, bookingId, rating, feedback) => {

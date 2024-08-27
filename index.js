@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGO_URI, {
       useUnifiedTopology: true,
 });
 
-// app.use('/api/auth', authRoutes);
+ app.use('/api/auth', authRoutes);
 // app.use('/api/bookings', bookingRoutes(io));
 // app.use('/api/drivers', driverRoutes);
 // app.use('/api/passengers', passengerRoutes(io));

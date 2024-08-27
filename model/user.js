@@ -9,7 +9,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  password: String,
+  password:{
+   type:String,
+   required:true
+  },
 
   role: {
     type: String,
@@ -43,4 +46,4 @@ userSchema.methods.comparePassword = async function (password) {
 
 }
 const User = mongoose.model('User', userSchema);
-module.exports = userSchema;
+module.exports = User;
