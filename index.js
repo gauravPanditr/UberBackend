@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-
+const socketIo = require('socket.io');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./router/authRoutes');
@@ -15,7 +15,13 @@ dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-
+const io = socketIo(server, {
+      cors: {
+        origin: "http://127.0.0.1:5500", // Update to match your frontend URL
+        methods: ["GET", "POST"]
+      }
+  });
+  
 
 app.use(cors()); // Enable CORS
 app.use(express.json());
@@ -27,8 +33,8 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
  app.use('/api/auth', authRoutes);
-app.use('/api/bookings', bookingRoutes(io));
-// app.use('/api/drivers', driverRoutes);
+app.use('/api', bookingRoutes(io));
+app.use('/api/drivers', driverRoutes);
 app.use('/api/passengers', passengerRoutes);
 
 server.listen(process.env.PORT, () => {
