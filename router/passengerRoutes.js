@@ -1,11 +1,12 @@
 const express = require('express');
-
+const {getPassengerBookings,   provideFeedBack}=require('../controller/passengerController');
 const authMiddleware=require('../middleware/authMiddleWares');
 const router=express.Router();
 
-module.exports=(io)=>{
+// module.exports=(io)=>{
       router.get('/booking',authMiddleware,getPassengerBookings);
-      router.get('/feedback',authMiddleware,provideFeedBack);
+      router.post('/feedback',authMiddleware,provideFeedBack);
 
-      return router;
-}
+//       return router;
+// }
+module.exports=router;

@@ -8,6 +8,7 @@ const bookingRoutes = require('./router/bookingRoutes');
 const driverRoutes = require('./router/driverRoutes');
 const passengerRoutes = require('./router/passengerRoutes');
 const { redisClient } = require('./utilis/redisClient');
+const LocationService=require('./services/locationService');
 const mongoose = require('mongoose');
 dotenv.config();
 
@@ -26,7 +27,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
  app.use('/api/auth', authRoutes);
-// app.use('/api/bookings', bookingRoutes(io));
+app.use('/api/bookings', bookingRoutes(io));
 // app.use('/api/drivers', driverRoutes);
 app.use('/api/passengers', passengerRoutes);
 
@@ -37,3 +38,21 @@ server.listen(process.env.PORT, () => {
 redisClient.on('connect', () => {
       console.log('Connected to Redis');
 });
+
+io.on('connection', (socket) => {
+      console.log('A user connected');
+    
+      socket.on('registerDriver', async (driverId) => {
+        await LocationService.setDriverSocket(driverId, socket.id);
+        console.log("set driver socket");
+      });
+  
+    
+      socket.on('disconnect', async () => {
+        console.log('A user disconnected');
+        const driverId = await LocationService.getDriverSocket(`driver:${socket.id}`);
+        if (driverId) {
+          await redisClient.del(`driver:${driverId}`);
+        }
+      });
+  });

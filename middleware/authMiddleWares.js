@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 
 const authMiddleware = async (req, res, next) => {
-      const token = req.header('Authorization')?.replace('Bearer', '');
+      const token = req.header('Authorization')?.replace('Bearer ', '');
       if (!token) {
             res.status(401).send('Access Denied');
       }
