@@ -2,8 +2,6 @@ const bookingService = require('../services/bookingService');
 const { io } = require('../index');
 const locationService =require('../services/locationService')
 
-
-
 const createBooking = (io) => async (req, res) => {
   try {
      
@@ -14,10 +12,8 @@ const createBooking = (io) => async (req, res) => {
     
     const nearbyDrivers = await bookingService.findNearbyDrivers(source);
     console.log(nearbyDrivers);
-    console.log("Navya");
-    for (const driver of nearbyDrivers) {
-            console.log("Navya");
-            
+      
+    for (const driver of nearbyDrivers) {   
         const driverSocketId = await locationService.getDriverSocket(driver[0]);
         if (driverSocketId) {
           driverIds.push(driver[0]);

@@ -13,7 +13,9 @@ class locationService {
     await redisClient.del(`driver:${driverId}`);
   }
 
-  async findNearbyDrivers(longitude, latitude, radiusKm) {
+  async findNearbyDrivers(latitude,longitude, radiusKm) {
+    //console.log(latitude);
+    
     const nearbyDrivers = await redisClient.sendCommand([
       'GEORADIUS',
       'drivers',
